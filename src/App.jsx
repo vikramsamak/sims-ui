@@ -104,7 +104,7 @@ function App() {
   return (
     <main className="container mx-auto min-h-screen max-h-full">
       <div className="flex items-center justify-center w-full h-20">
-        <p className="text-4xl text-center">SIMS UI</p>
+        <p className="text-4xl text-center">Student&apos;s Information Management System</p>
       </div>
       <div className="py-4">
         <div className="mb-6">
