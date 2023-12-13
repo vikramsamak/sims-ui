@@ -16,33 +16,6 @@ class crudMethods {
         }
     }
 
-    async getStudentInfoByRollNo(roll_no) {
-        try {
-            const res = await axios.get(`${this.URL}/getstudentinfobyrollno?roll_no=` + roll_no)
-            return res.data.data;
-        } catch (error) {
-            return error;
-        }
-    }
-
-    async getStudentInfoByName(name) {
-        try {
-            const res = await axios.get(`${this.URL}/getstudentinfobyname?name=` + name)
-            return res.data.data;
-        } catch (error) {
-            return error;
-        }
-    }
-
-    async getStudentInfoByClass(student_class) {
-        try {
-            const res = await axios.get(`${this.URL}/getstudentinfobyclass?class=` + student_class)
-            return res.data.data;
-        } catch (error) {
-            return error;
-        }
-    }
-
     async addStudentInfo(newStudentData) {
         try {
             const res = await axios.post(`${this.URL}/savestudentinfo`, newStudentData)
@@ -55,12 +28,8 @@ class crudMethods {
 
 
     async updateStudentInfo(updatedStudentData) {
-        var data = {
-            name: updatedStudentData.name,
-            student_class: updatedStudentData.student_class
-        }
         try {
-            const res = await axios.patch(`${this.URL}/updatestudentinfo?roll_no=` + updatedStudentData.roll_no, data)
+            const res = await axios.patch(`${this.URL}/updatestudentinfo?roll_no=` + updatedStudentData.roll_no, updatedStudentData)
             return res.data
         }
         catch (error) {
@@ -76,8 +45,6 @@ class crudMethods {
             return error
         }
     }
-
-
 
 }
 
