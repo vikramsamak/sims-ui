@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button, Link } from "@nextui-org/react";
 import Mainnavbar from "./components/Mainnavbar";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home"
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [ErrorMsg, setErrorMsg] = useState("")
+  const [notification, setnotification] = useState("")
   const navigate = useNavigate();
 
   return (
@@ -25,16 +25,16 @@ function App() {
           <ModalContent className="bg-black text-white">
             {(onClose) => (
               <>
-                <ModalHeader className="flex flex-col gap-1">Error ...!</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">Notification...!</ModalHeader>
                 <ModalBody>
                   <p>
-                    {ErrorMsg}
+                    {notification}
                   </p>
                 </ModalBody>
                 <ModalFooter>
                   <Button
-                    className="bg-gray-600 text-white"
-                    variant="faded"
+                    color="danger"
+                    variant="light"
                     onPress={onClose}>
                     Close
                   </Button>
@@ -45,11 +45,18 @@ function App() {
         </Modal>
         <Mainnavbar />
         <Routes>
-          <Route path="/" element={<Home setError={setErrorMsg} openModal={onOpen} />} />
-          <Route path="/contactme" element={<Contactme setError={setErrorMsg} openModal={onOpen} />} />
+          <Route path="/" element={<Home setnotification={setnotification} openModal={onOpen} />} />
+          <Route path="/contactme" element={<Contactme setnotification={setnotification} openModal={onOpen} />} />
         </Routes>
+        <div className="flex flex-col w-full px-6 justify-center items-center">
+          <p className="text-white">
+            Designed & Develped By
+          </p>
+          <Link href="https://github.com/vikramsamak" target="_blank">
+            Vikram Samak
+          </Link>
+        </div>
       </main >
-
     </NextUIProvider>
   )
 }

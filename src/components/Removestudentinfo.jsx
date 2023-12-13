@@ -1,22 +1,23 @@
 import { useState } from "react"
 import { Card, CardBody, Input, Button } from "@nextui-org/react";
 import PropTypes from 'prop-types'
+import { queryKey } from '../../constants/constants'
+import { StudenInfo } from '../../helpers/crudMethods'
+import { useSWRConfig } from "swr";
+function Removestudentinfo({ setnotification, openModal, }) {
+    const { mutate } = useSWRConfig()
+    const [roll_no, setroll_no] = useState()
 
-function Removestudentinfo({ deleteStudentifo }) {
-
-    const [studentData, setstudentData] = useState({
-        name: "",
-        roll_no: "",
-        student_class: ""
-    })
-
-    const removeStudentInfo = () => {
-        if (studentData.roll_no.length === 0 || studentData.roll_no === "") {
-            // seterrrorMsg("Please enter a valid roll no.")
-            // onOpen();
+    const removeStudentInfo = async () => {
+        if (roll_no === "") {
+            setnotification("Please enter a valid roll no.")
+            openModal();
         }
-        deleteStudentifo(studentData.roll_no)
-        setstudentData({ ...studentData, roll_no: "" })
+        else {
+            await StudenInfo.deletestudentInfo(roll_no)
+            setroll_no("")
+            mutate(queryKey)
+        }
     }
 
     return (
@@ -25,14 +26,14 @@ function Removestudentinfo({ deleteStudentifo }) {
                 <div className="flex justify-center">
                     <Input
                         isRequired
-                        value={studentData.roll_no}
+                        value={roll_no}
                         min={1}
                         type="number"
                         label="Roll No"
                         variant="underlined"
                         placeholder="Enter student's roll no"
                         className="w-full"
-                        onChange={(event) => setstudentData({ ...studentData, roll_no: event.target.value })}
+                        onChange={(event) => setroll_no(event.target.value)}
                     />
                 </div>
                 <div className="flex gap-8 mt-4">
@@ -47,7 +48,7 @@ function Removestudentinfo({ deleteStudentifo }) {
                         color="danger"
                         variant="light"
                         className="w-1/2"
-                        onClick={() => { setstudentData({ ...studentData, roll_no: "" }) }}
+                        onClick={() => { setroll_no("") }}
                     >
                         Clear
                     </Button>
@@ -58,6 +59,8 @@ function Removestudentinfo({ deleteStudentifo }) {
 }
 
 Removestudentinfo.propTypes = {
+    setnotification: PropTypes.func,
+    openModal: PropTypes.func,
     deleteStudentifo: PropTypes.func,
 }
 

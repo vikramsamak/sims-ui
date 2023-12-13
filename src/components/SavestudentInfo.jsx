@@ -1,8 +1,12 @@
 import { Card, CardBody, Input, Button } from "@nextui-org/react";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { StudenInfo } from '../../helpers/crudMethods'
+import { queryKey } from '../../constants/constants'
+import { useSWRConfig } from "swr"
+function SavestudentInfo({ setnotification, openModal }) {
 
-function SavestudentInfo({ setError, openModal }) {
+    const { mutate } = useSWRConfig()
     const [studentData, setstudentData] = useState({
         name: "",
         roll_no: "",
@@ -10,13 +14,19 @@ function SavestudentInfo({ setError, openModal }) {
         division: ""
     })
 
-    const addNewStudent = () => {
-        if (studentData.name === "" || studentData.roll_no === "" || studentData.student_class === "") {
-            setError("Please enter a valid student info.")
+    const addNewStudent = async () => {
+        if (studentData.name === "" ||
+            studentData.roll_no === "" ||
+            studentData.standard === "" ||
+            studentData.division === "") {
+            setnotification("Please enter a valid student info.")
             openModal()
         }
-
-        setstudentData({ ...studentData, roll_no: "", name: "", student_class: "" })
+        else {
+            await StudenInfo.addStudentInfo(studentData)
+            setstudentData({ ...studentData, roll_no: "", name: "", standard: "", division: "" })
+            mutate(queryKey)
+        }
     }
 
     return (
@@ -86,7 +96,7 @@ function SavestudentInfo({ setError, openModal }) {
                         color="danger"
                         variant="light"
                         className="w-1/2"
-                        onClick={() => { setstudentData({ ...studentData, name: "", roll_no: "", student_class: "" }) }}
+                        onClick={() => { setstudentData({ ...studentData, name: "", roll_no: "", standard: "", division: "" }) }}
                     >
                         Clear
                     </Button>
@@ -97,8 +107,9 @@ function SavestudentInfo({ setError, openModal }) {
 }
 
 SavestudentInfo.propTypes = {
-    setError: PropTypes.func,
+    setnotification: PropTypes.func,
     openModal: PropTypes.func,
+
 }
 
 export default SavestudentInfo

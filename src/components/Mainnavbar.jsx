@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Button } from "@nextui-org/react";
 import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -31,6 +31,13 @@ export default function Mainnavbar() {
                         </NavLink>
                     </Link>
                 </NavbarItem>
+                <NavbarItem>
+                    <Button color="primary" variant="flat">
+                        <NavLink to='/'>
+                            Log Out
+                        </NavLink>
+                    </Button>
+                </NavbarItem>
             </NavbarContent>
             <NavbarMenuToggle
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -44,14 +51,18 @@ export default function Mainnavbar() {
                         </NavLink>
                     </Link>
                 </NavbarMenuItem>
-                <NavbarMenuItem >
+                <NavbarMenuItem>
                     <Link className={`w-full ${location.pathname === '/contactme' ? 'text-blue-600' : 'text-neutral-50'}`} size="lg">
                         <NavLink to="/contactme">
                             Contact Me
                         </NavLink>
                     </Link>
                 </NavbarMenuItem>
-
+                <NavbarItem>
+                    <Button as={Link} color="primary" href="#" variant="flat">
+                        Sign Up
+                    </Button>
+                </NavbarItem>
             </NavbarMenu>
         </Navbar >
     );

@@ -1,1 +1,1 @@
-export const queryKey = 'STUDENTS';
+export const queryKey = 'STUDENTSINFO';

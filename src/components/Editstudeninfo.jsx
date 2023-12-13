@@ -1,8 +1,12 @@
 import { useState } from "react"
 import { Card, CardBody, Input, Button } from "@nextui-org/react";
 import PropTypes from "prop-types"
+import { StudenInfo } from '../../helpers/crudMethods'
+import { queryKey } from '../../constants/constants'
+import { useSWRConfig } from "swr";
+function Editstudeninfo({ setnotification, openModal }) {
 
-function Editstudeninfo({ setError, openModal }) {
+    const { mutate } = useSWRConfig()
     const [studentData, setstudentData] = useState({
         roll_no: "",
         new_roll_no: "",
@@ -11,13 +15,16 @@ function Editstudeninfo({ setError, openModal }) {
         division: ""
     })
 
-    const editStudentInfo = () => {
-        if (studentData.name === "" || studentData.roll_no === "" || studentData.standard === "") {
-            setError("Please enter a valid student info.")
+    const editStudentInfo = async () => {
+        if (studentData.name === "" || studentData.roll_no === "" || studentData.new_roll_no === "" || studentData.standard === "") {
+            setnotification("Please enter a valid student info.")
             openModal()
         }
-
-        setstudentData({ ...studentData, roll_no: "", name: "", student_class: "" })
+        else {
+            await StudenInfo.updateStudentInfo(studentData)
+            setstudentData({ ...studentData, roll_no: "", new_roll_no: "", name: "", standard: "", division: "" })
+            mutate(queryKey)
+        }
     }
 
     return (
@@ -95,7 +102,7 @@ function Editstudeninfo({ setError, openModal }) {
                         color="danger"
                         variant="light"
                         className="w-1/2"
-                        onClick={() => { setstudentData({ ...studentData, name: "", roll_no: "", student_class: "" }) }}
+                        onClick={() => { setstudentData({ ...studentData, roll_no: "", new_roll_no: "", name: "", standard: "", division: "" }) }}
                     >
                         Clear
                     </Button>
@@ -106,8 +113,9 @@ function Editstudeninfo({ setError, openModal }) {
 }
 
 Editstudeninfo.propTypes = {
-    setError: PropTypes.func,
-    openModal: PropTypes.func
+    setnotification: PropTypes.func,
+    openModal: PropTypes.func,
+
 }
 
 export default Editstudeninfo
